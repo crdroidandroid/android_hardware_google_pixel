@@ -38,7 +38,7 @@ FileNode::FileNode(std::string name, std::string node_path, std::vector<RequestG
       hold_fd_(hold_fd),
       truncate_(truncate),
       write_only_(write_only),
-      warn_timeout_(android::base::GetBoolProperty("ro.debuggable", false) ? 5ms : 50ms) {}
+      warn_timeout_(50ms) {}
 
 std::chrono::milliseconds FileNode::Update(bool log_error) {
     std::size_t value_index = default_val_index_;

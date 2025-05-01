@@ -40,7 +40,7 @@ FileNode::FileNode(std::string name, std::string node_path, std::vector<RequestG
       write_only_(write_only),
       warn_timeout_(50ms) {}
 
-std::chrono::milliseconds FileNode::Update(bool log_error) {
+std::chrono::milliseconds FileNode::Update([[maybe_unused]] bool log_error) {
     std::size_t value_index = default_val_index_;
     std::chrono::milliseconds expire_time = std::chrono::milliseconds::max();
 
@@ -70,10 +70,10 @@ std::chrono::milliseconds FileNode::Update(bool log_error) {
         fd_.reset(TEMP_FAILURE_RETRY(open(node_path_.c_str(), flags)));
 
         if (fd_ == -1 || !android::base::WriteStringToFd(req_value, fd_)) {
-            if (log_error) {
+            /*if (log_error) {
                 LOG(WARNING) << "Failed to write to node: " << node_path_
                              << " with value: " << req_value << ", fd: " << fd_;
-            }
+            }*/
             // Retry in 500ms or sooner
             expire_time = std::min(expire_time, std::chrono::milliseconds(500));
         } else {
